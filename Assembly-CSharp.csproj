@@ -19,7 +19,11 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
+<<<<<<< HEAD
 	<DefineConstants>DEBUG;TRACE;UNITY_ANDROID;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;UNITY_ANDROID_API;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_1;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_OSX;UNITY_TEAM_LICENSE</DefineConstants>
+=======
+	<DefineConstants>DEBUG;TRACE;UNITY_ANDROID;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;UNITY_ANDROID_API;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_0;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE</DefineConstants>
+>>>>>>> 31c0a64... 1st Network prototype
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -39,10 +43,10 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
@@ -62,8 +66,16 @@
      <Compile Include="Assets\Energy Bar Toolkit\Scripts\MadCommons\MadMatrix.cs" />
      <Compile Include="Assets\Energy Bar Toolkit\Scripts\MadCommons\MadTransform.cs" />
      <Compile Include="Assets\Energy Bar Toolkit\Scripts\SimpleEvent.cs" />
+<<<<<<< HEAD
      <Compile Include="Assets\RailController.cs" />
      <Compile Include="Assets\Scripts\CueTarget.cs" />
+=======
+     <Compile Include="Assets\Photon\LiteLobbyPeer.cs" />
+     <Compile Include="Assets\Photon\PhotonClient.cs" />
+     <Compile Include="Assets\RailController.cs" />
+     <Compile Include="Assets\Scripts\CueTarget.cs" />
+     <Compile Include="Assets\Scripts\Network\NetworkClient.cs" />
+>>>>>>> 31c0a64... 1st Network prototype
      <Compile Include="Assets\Scripts\Scripts\BallVelocity.cs" />
      <Compile Include="Assets\Scripts\Scripts\Cue.cs" />
      <Compile Include="Assets\Scripts\Scripts\CueBall.cs" />
@@ -73,6 +85,10 @@
      <Compile Include="Assets\Scripts\Scripts\ProgressBarTest.cs" />
      <Compile Include="Assets\Scripts\Scripts\ProgressManager.cs" />
      <Compile Include="Assets\Scripts\Scripts\StaffDirection.cs" />
+<<<<<<< HEAD
+=======
+     <None Include="Assets\Photon\lib\Photon3Unity3D.xml" />
+>>>>>>> 31c0a64... 1st Network prototype
      <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\ExpandFillShaderPre.shader" />
      <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\UnlitShaderPre.shader" />
      <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\RadialFillShaderPre.shader" />
@@ -84,6 +100,12 @@
      <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\VerticalFillShaderPre.shader" />
      <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\HorizontalFillShader.shader" />
      <None Include="Assets\Energy Bar Toolkit\README.txt" />
+<<<<<<< HEAD
+=======
+ <Reference Include="Photon3Unity3D">
+ <HintPath>Assets\Photon\lib\Photon3Unity3D.dll</HintPath>
+ </Reference>
+>>>>>>> 31c0a64... 1st Network prototype
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

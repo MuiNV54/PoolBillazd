@@ -25,6 +25,10 @@ public class Cue : MonoBehaviour
 	private GameManager _gameManager;
 	private CueBall cueBall;
 
+	/// Network component
+	public NetworkClient NetworkCom;
+	public bool isPlayable;
+
 	void Start () 
 	{
 		transform.position = target.transform.position;
@@ -56,70 +60,82 @@ public class Cue : MonoBehaviour
 	{
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		RaycastHit hit;
-		
-		if (Physics.Raycast(ray,out hit, 200.0f))
+
+		///<summary>
+		/// In case this client is taking turn, it will sends the appropriate parameters to the opponent.
+		/// </summary>
+		if (isPlayable)
 		{
-			Debug.DrawLine(ray.origin, hit.point);
+			if (Physics.Raycast(ray,out hit, 200.0f))
+			{
+			//Debug.DrawLine(ray.origin, hit.point);
 //			if (hit.collider.gameObject.tag == "Cue")
 //			{
 //				if (Input.GetMouseButtonDown(0))
 //				{
 //					staffRotationEnabled = true;
 //				}
-//			}
+				//			}
 
-			if (Input.GetMouseButtonDown(0))
-			{
-				if (hit.collider.tag != "DisplayStaff")
-				{
-					staffRotationEnabled = true;
-					beginPoint = hit.point;
-
-					if (-transform.forward.x <= 0)
-					{
-						oldStaffAngle = Vector3.Angle ( - Vector3.forward, - transform.forward);
-					}
-					else
-					{
-						oldStaffAngle = - Vector3.Angle ( - Vector3.forward, - transform.forward);
-					}
-				}
-			}
-
-			if ((hit.collider.gameObject.tag == "DisplayStaff") && !staffRotationEnabled)
-			{
 				if (Input.GetMouseButtonDown(0))
 				{
-					staffMoveEnabled = true;
-					oldDisplayStaffPoint = hit.point;
-					oldStaffPosition = transform.position;
+					if (hit.collider.tag != "DisplayStaff")
+					{
+						staffRotationEnabled = true;
+						beginPoint = hit.point;
+
+						if (-transform.forward.x <= 0)
+						{
+							oldStaffAngle = Vector3.Angle ( - Vector3.forward, - transform.forward);
+						}
+						else 
+						{
+							oldStaffAngle = - Vector3.Angle ( - Vector3.forward, - transform.forward);
+						}
+					}
+				}
+
+				if ((hit.collider.gameObject.tag == "DisplayStaff") && !staffRotationEnabled)
+				{
+					if (Input.GetMouseButtonDown(0))
+					{
+						staffMoveEnabled = true;
+						oldDisplayStaffPoint = hit.point;
+						oldStaffPosition = transform.position;
+					}
+				}
+			}
+
+			if (staffRotationEnabled)
+			{
+				UpdateRotation(hit.point);
+			}
+
+			if (staffMoveEnabled)
+			{
+				ChangeStaffPosition(hit.point);
+			}
+
+			if (Input.GetMouseButtonUp(0))
+			{
+				if (staffMoveEnabled)
+				{
+					ReturnStaffPosition();
+				}
+				else if (staffRotationEnabled)
+				{
+					staffRotationEnabled = false;
 				}
 			}
 		}
-
-		if (staffRotationEnabled)
+		///<summary>
+		/// In case the opponent is taking turn, this client will get the event from other client through Photon server
+		/// </summary>
+		else 
 		{
-			UpdateRotation(hit.point);
-		}
-
-		if (staffMoveEnabled)
-		{
-			ChangeStaffPosition(hit.point);
-		}
-
-		if (Input.GetMouseButtonUp(0))
-		{
-			if (staffMoveEnabled)
-			{
-				ReturnStaffPosition();
-			}
-			else if (staffRotationEnabled)
-			{
-				staffRotationEnabled = false;
-			}
+			UpdateFromPeer();
 		}
 	}
-
 	void UpdateRotation(Vector3 point)
 	{
 		Vector3 oldHitPointDiretion = beginPoint - transform.position;
@@ -142,10 +158,14 @@ public class Cue : MonoBehaviour
 		transform.localEulerAngles =new Vector3(transform.localEulerAngles.x,
 		                                        oldStaffAngle + adjustAngle,
 		                                   		transform.localEulerAngles.z);
+
+		/// Send the Angle Cue for the opponent
+		this.NetworkCom.SendCueAngle(oldStaffAngle + adjustAngle);
 	}
 
 	void ChangeStaffPosition(Vector3 point)
 	{
+		Vector3 pos = transform.position;
 		cueTarget.SetActive (false);
 		cueDirection.SetActive (false);
 
@@ -160,7 +180,10 @@ public class Cue : MonoBehaviour
 			                                              displayStaff.transform.position.z);
 			
 			transform.position = oldStaffPosition - transform.right * distanceStaffMove;
+			pos = transform.position;
 		}
+		/// Send the Cue position to the opponent
+		this.NetworkCom.SendCuePos(pos);
 	}
 
 	void ReturnStaffPosition()
@@ -171,7 +194,30 @@ public class Cue : MonoBehaviour
 		Vector3 forceToBallDirection = target.transform.position - transform.position;
 		forceToBallDirection.y = 0;
 		cueBall.ForceToBall(forceToBallDirection);
+		/// Send the force of the cue ball to the opponent
+		this.NetworkCom.SendForceToBall(forceToBallDirection);
 
 		transform.position = oldStaffPosition;
+	}
+
+	void UpdateFromPeer()
+	{
+		if ( this.NetworkCom.ForceToBall != Vector3.zero)
+		{
+			cueBall.ForceToBall(this.NetworkCom.ForceToBall);
+			this.NetworkCom.ForceToBall = Vector3.zero;
+		}
+		if (this.NetworkCom.CueAngle != 0.0f)
+		{
+			transform.localEulerAngles = new Vector3(transform.localEulerAngles.x,
+			                                         this.NetworkCom.CueAngle,
+			                                         transform.localEulerAngles.z);
+			this.NetworkCom.CueAngle = 0.0f;
+		}
+		if (this.NetworkCom.CuePos != transform.position)
+		{
+			transform.position = this.NetworkCom.CuePos;
+		}
+		isPlayable = this.NetworkCom.isNextPlayer;
 	}
 }
