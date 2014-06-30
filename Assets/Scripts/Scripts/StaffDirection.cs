@@ -6,58 +6,131 @@ public class StaffDirection : MonoBehaviour
 	public GameObject staffTarget;
 	public GameObject staffDirection;
 
-	private Staff staff;
+	public GameObject leftSide;
+	public GameObject rightSide;
+
+	public float distanceBall = 0.258f;
+
+	Vector3 leftVector;
+	Vector3 rightVector;
+	Vector3 centerVector;
+	Vector3 directionVector;
+
+	public Transform ballTarget;
+	Transform leftTarget;
+	Transform centerTarget;
+	Transform rightTarget;
+	public GameObject targetPos;
+
+	float initDistance;
+
+	private Cue cue;
 
 	void Start()
 	{
-		staff = GetComponent<Staff> ();
+		cue = GetComponent<Cue> ();
+		initDistance = (staffTarget.transform.position - transform.position).magnitude;
 	}
 
 	void Update()
 	{
-		if (staff.staffRotationEnabled)
-		{
-			DrawTarget ();
-		}
-
-		if (staff.staffMoveEnabled)
-		{
-			staffDirection.SetActive(false);
-//			staffTarget.SetActive(false);
-		}
+		DrawTarget ();
 	}
 	
 	void DrawTarget()
 	{
 		RaycastHit hit;
-		Vector3 fwd = - transform.forward;
+		Vector3 fwd = - transform.right;
+		int layerMask = 1 << 8;
 
-		if (Physics.Raycast(transform.position, fwd, out hit))
+		if (Physics.Raycast(leftSide.transform.position, fwd, out hit, layerMask))
 		{
-			if ((hit.collider.tag == "WhiteBall") && (hit.collider.name != "WhiteBall"))
+			Debug.DrawLine(leftSide.transform.position, hit.point);
+			leftVector = hit.point - leftSide.transform.position;
+
+			if (hit.collider.tag == "Ball")
 			{
-				Debug.DrawLine(transform.position, hit.point);
+				leftTarget = hit.collider.transform;
 			}
-
-			DrawDirection (hit.point);
+			else 
+			{
+				leftTarget = null;
+			}
 		}
-	}
 
-	void DrawDirection(Vector3 point)
-	{
-//		float lengthStaffDirection = Vector3.Magnitude(transform.position - staffTarget.transform.position);
-		float lengthStaffDirection = Vector3.Magnitude(transform.position - point);
-		staffDirection.transform.localScale = new Vector3(staffDirection.transform.localScale.x,
-		                                                  staffDirection.transform.localScale.y,
-		                                                  lengthStaffDirection);
-		staffTarget.transform.localScale = new Vector3 (staffTarget.transform.localScale.x,
-		                                               staffTarget.transform.localScale.y,
-		                                                0.3f/lengthStaffDirection);
+		if (Physics.Raycast(rightSide.transform.position, fwd, out hit, layerMask))
+		{
+			Debug.DrawLine(rightSide.transform.position, hit.point);
+			rightVector = hit.point - rightSide.transform.position;
 
-		staffDirection.transform.position = transform.position + new Vector3(0, 0.05f, 0);
-		staffDirection.transform.eulerAngles = new Vector3 (transform.eulerAngles.x, 
-		                                                    transform.eulerAngles.y,
-		                                                    transform.eulerAngles.z);
-		staffDirection.SetActive(true);
+			if (hit.collider.tag == "Ball")
+			{
+				rightTarget = hit.collider.transform;
+			}
+			else 
+			{
+				rightTarget = null;
+			}
+		}
+
+		if (Physics.Raycast(transform.position, fwd, out hit, layerMask))
+		{
+			Debug.DrawLine(transform.position, hit.point);
+			centerVector = hit.point - transform.position;
+
+			if (hit.collider.tag == "Ball")
+			{
+				centerTarget = hit.collider.transform;
+			}
+			else 
+			{
+				centerTarget = null;
+			}
+		}
+
+		float ratio = (centerVector.magnitude - 0.12f) / (centerVector.magnitude);
+		centerVector *= ratio;
+
+		directionVector = centerVector;
+		ballTarget = centerTarget;
+
+		if (leftVector.magnitude < directionVector.magnitude)
+		{
+			directionVector = leftVector;
+			ballTarget = leftTarget;
+		}
+
+		if (rightVector.magnitude < directionVector.magnitude)
+		{
+			directionVector = rightVector;
+			ballTarget = rightTarget;
+		}
+
+		if (ballTarget != null)
+		{
+			Vector3 vectorDistance = ballTarget.transform.position - transform.position;
+			float angle = Vector3.Angle( - transform.right, vectorDistance);
+			float b = vectorDistance.magnitude * Mathf.Sin((angle * Mathf.PI)/180);
+			float a = Mathf.Abs(vectorDistance.magnitude * Mathf.Cos((angle * Mathf.PI)/180));
+			float e = Mathf.Sqrt(Mathf.Abs(distanceBall * distanceBall - b * b));
+			float distancePos = a - e;
+			
+			float distanceTemp = transform.right.magnitude;
+			Vector3 vectorPos = - transform.right * distancePos / (transform.right.magnitude);
+			
+			staffTarget.transform.position = transform.position + vectorPos;
+		}
+		else
+		{
+			staffTarget.transform.position = transform.position + directionVector ;
+		}
+
+		Vector3 distanceBallTarget = transform.position - staffTarget.transform.position;
+		distanceBallTarget.y = 0;
+		float ratioCueDirection = distanceBallTarget.magnitude / initDistance;
+
+		staffDirection.transform.localScale = new Vector3(ratioCueDirection, 1, 1);
+		staffDirection.transform.position = (staffTarget.transform.position + transform.position) / 2 
+			+ new Vector3(0, 0.07f, 0);
 	}
 }
