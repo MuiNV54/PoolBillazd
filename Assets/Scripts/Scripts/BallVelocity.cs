@@ -6,10 +6,11 @@ public class BallVelocity : MonoBehaviour
 	public bool isStatic;
 	public bool isFinished;
 	public bool isAddedToArray;
+	public bool cueBallFail = false;
 
 	public Vector3 firstPosition;
 	public float MinAcceptableVelocity = 0.1f;
-	public float MinAcceptableEulerangle = 0.3f;
+	public float MinAcceptableEulerangle = 0.1f;
 
 
 	private GameObject gameManager;
@@ -22,16 +23,19 @@ public class BallVelocity : MonoBehaviour
 		isAddedToArray = false;
 		firstPosition = transform.position;
 
-		gameManager = GameObject.FindGameObjectWithTag("GameController");
+		gameManager = GameObject.FindGameObjectWithTag("GameManager");
 		_gameManager = gameManager.GetComponent<GameManager> ();
 	}
 
 	void Update () 
 	{
-		if ((rigidbody.velocity.magnitude < MinAcceptableVelocity))
+		if (rigidbody.velocity.magnitude < MinAcceptableVelocity)
 		{
-			rigidbody.velocity = Vector3.zero;
-			rigidbody.angularVelocity = Vector3.zero;
+			if (!rigidbody.isKinematic)
+			{
+				rigidbody.velocity = Vector3.zero;
+				rigidbody.angularVelocity = Vector3.zero;
+			}
 			isStatic = true;
 		}
 		else
@@ -39,46 +43,43 @@ public class BallVelocity : MonoBehaviour
 			isStatic = false;
 		}
 
-		if ((transform.position.y < 2.5f))
-		{
-			rigidbody.useGravity = false;
-			rigidbody.velocity = Vector3.zero;
-
-			if (_gameManager.allBallStatic)
-			{
-				rigidbody.useGravity = true;
-				renderer.enabled = true;
-				rigidbody.velocity = Vector3.zero;
-				transform.position = firstPosition;
-			}
-		}
+		OnCueBallFail ();
 	}
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.gameObject.tag == "Hole")
+		if (other.gameObject.tag == "Pocket")
 		{
-			isFinished = true;
-			collider.isTrigger = true;
-
-			Debug.Log ("abcadasdas");
-			if (gameObject.name != "WhiteBall")
+			Debug.Log("Ball");
+			if (gameObject.name != "CUE_BALL")
 			{
-//				rigidbody.useGravity = false;
-//				rigidbody.velocity = Vector3.zero;
+				if (gameObject.name != "ball08")
+				{
+					isFinished = true;
+					rigidbody.constraints = RigidbodyConstraints.None;
+				}
+				else
+				{
+					Debug.Log("Thua CMMR!");
+				}
 			}
 			else 
 			{
-				Debug.Log ("WhiteBall");
-
-//				rigidbody.useGravity = false;
-//				rigidbody.velocity = Vector3.zero;
 				rigidbody.angularVelocity = Vector3.zero;
-//				renderer.enabled = false;
+				rigidbody.constraints = RigidbodyConstraints.None;
+				cueBallFail = true;
 			}
+		}
+	}
 
-//			transform.eulerAngles = Vector3.zero;
-//			transform.localEulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0);
+	void OnCueBallFail()
+	{
+		if ((cueBallFail) && (_gameManager.allBallStatic))
+		{
+			transform.position = firstPosition;
+			rigidbody.velocity = Vector3.zero;
+			rigidbody.constraints = RigidbodyConstraints.FreezePositionY;
+			cueBallFail = false;
 		}
 	}
 }
