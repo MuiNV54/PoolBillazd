@@ -1,10 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Staff : MonoBehaviour 
+public class Cue : MonoBehaviour 
 {
 	public GameObject target;
 	public GameObject displayStaff;
+	public GameObject cueTarget;
+	public GameObject cueDirection;
+	private GameObject ballDirection;
+
 	public float maxDistanceStaffMove = -3f;
 	public bool staffMoveEnabled;
 	public bool staffRotationEnabled;
@@ -15,11 +19,12 @@ public class Staff : MonoBehaviour
 
 	private GameObject gameManager;
 	private GameManager _gameManager;
-	private Ball ball;
+	private CueBall cueBall;
 
 	void Start () 
 	{
 		transform.position = target.transform.position;
+		transform.eulerAngles = Vector3.zero;
 //		transform.eulerAngles = new Vector3 (transform.eulerAngles.x, 0, transform.eulerAngles.z);
 
 		staffMoveEnabled = false;
@@ -29,7 +34,8 @@ public class Staff : MonoBehaviour
 		oldDisplayStaffPosition = displayStaff.transform.position;
 		oldStaffPosition = transform.position;
 
-		ball = target.GetComponent<Ball> ();
+		cueBall = target.GetComponent<CueBall> ();
+		ballDirection = GameObject.Find("BallDirection");
 //		gameManager = GameObject.FindGameObjectWithTag("GameController");
 //		_gameManager = gameManager.GetComponent<GameManager> ();
 	}
@@ -113,6 +119,9 @@ public class Staff : MonoBehaviour
 
 	void ChangeStaffPosition(Vector3 point)
 	{
+		cueTarget.SetActive (false);
+		cueDirection.SetActive (false);
+
 		float distanceStaffMove = point.x - oldDisplayStaffPoint.x;
 		float newDisplayStaffPositionX = oldDisplayStaffPosition.x + distanceStaffMove;
 		
@@ -130,13 +139,11 @@ public class Staff : MonoBehaviour
 	void ReturnStaffPosition()
 	{
 		staffMoveEnabled = false;
-		displayStaff.transform.position = new Vector3(displayStaff.transform.position.x,
-		                                              displayStaff.transform.position.y,
-		                                              oldDisplayStaffPosition.z);
+		displayStaff.transform.position = oldDisplayStaffPosition;
 		
 		Vector3 forceToBallDirection = target.transform.position - transform.position;
 		forceToBallDirection.y = 0;
-		ball.ForceToBall(forceToBallDirection);
+		cueBall.ForceToBall(forceToBallDirection);
 
 		transform.position = oldStaffPosition;
 	}
