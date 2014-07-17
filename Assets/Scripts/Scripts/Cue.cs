@@ -17,6 +17,10 @@ public class Cue : MonoBehaviour
 	private Vector3 oldDisplayStaffPosition;
 	private Vector3 oldStaffPosition;
 
+	Vector3 beginPoint;
+	Vector3 beginPos;
+	float oldStaffAngle;
+
 	private GameObject gameManager;
 	private GameManager _gameManager;
 	private CueBall cueBall;
@@ -56,11 +60,29 @@ public class Cue : MonoBehaviour
 		if (Physics.Raycast(ray,out hit, 200.0f))
 		{
 			Debug.DrawLine(ray.origin, hit.point);
-			if (hit.collider.gameObject.tag == "Cue")
+//			if (hit.collider.gameObject.tag == "Cue")
+//			{
+//				if (Input.GetMouseButtonDown(0))
+//				{
+//					staffRotationEnabled = true;
+//				}
+//			}
+
+			if (Input.GetMouseButtonDown(0))
 			{
-				if (Input.GetMouseButtonDown(0))
+				if (hit.collider.tag != "DisplayStaff")
 				{
 					staffRotationEnabled = true;
+					beginPoint = hit.point;
+
+					if (-transform.forward.x <= 0)
+					{
+						oldStaffAngle = Vector3.Angle ( - Vector3.forward, - transform.forward);
+					}
+					else
+					{
+						oldStaffAngle = - Vector3.Angle ( - Vector3.forward, - transform.forward);
+					}
 				}
 			}
 
@@ -100,21 +122,26 @@ public class Cue : MonoBehaviour
 
 	void UpdateRotation(Vector3 point)
 	{
-		Vector3 newStaffDirection = point - transform.position;
-		newStaffDirection.y = 0;
-		
-		if (newStaffDirection.x <= 0)
+		Vector3 oldHitPointDiretion = beginPoint - transform.position;
+		Vector3 newHitPointDirection = point - transform.position;
+		oldHitPointDiretion.y = 0;
+		newHitPointDirection.y = 0;
+
+		float oldPointAngle;
+		float newPointAngle;
+
+		newPointAngle = Vector3.Angle (Vector3.forward, newHitPointDirection);
+		oldPointAngle = Vector3.Angle (Vector3.forward, oldHitPointDiretion);
+
+		float adjustAngle = newPointAngle - oldPointAngle;
+		if ((newHitPointDirection.x < 0) && (oldHitPointDiretion.x < 0))
 		{
-			transform.localEulerAngles =new Vector3(transform.localEulerAngles.x,
-			                                   Vector3.Angle(-Vector3.forward, newStaffDirection) + 90,
-			                                   transform.localEulerAngles.z);
+			adjustAngle *= -1;
 		}
-		else
-		{
-			transform.eulerAngles =new Vector3(transform.eulerAngles.x,
-			                                   - Vector3.Angle(-Vector3.forward, newStaffDirection) + 90,
-			                                   transform.eulerAngles.z);
-		}
+
+		transform.localEulerAngles =new Vector3(transform.localEulerAngles.x,
+		                                        oldStaffAngle + adjustAngle,
+		                                   		transform.localEulerAngles.z);
 	}
 
 	void ChangeStaffPosition(Vector3 point)
