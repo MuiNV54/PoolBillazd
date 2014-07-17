@@ -47,21 +47,45 @@ public class StaffDirection : MonoBehaviour
 		{
 			Debug.DrawLine(leftSide.transform.position, hit.point);
 			leftVector = hit.point - leftSide.transform.position;
-			leftTarget = hit.collider.transform;
+
+			if (hit.collider.tag == "Ball")
+			{
+				leftTarget = hit.collider.transform;
+			}
+			else 
+			{
+				leftTarget = null;
+			}
 		}
 
 		if (Physics.Raycast(rightSide.transform.position, fwd, out hit, layerMask))
 		{
 			Debug.DrawLine(rightSide.transform.position, hit.point);
 			rightVector = hit.point - rightSide.transform.position;
-			rightTarget = hit.collider.transform;
+
+			if (hit.collider.tag == "Ball")
+			{
+				rightTarget = hit.collider.transform;
+			}
+			else 
+			{
+				rightTarget = null;
+			}
 		}
 
 		if (Physics.Raycast(transform.position, fwd, out hit, layerMask))
 		{
 			Debug.DrawLine(transform.position, hit.point);
 			centerVector = hit.point - transform.position;
-			centerTarget = hit.collider.transform;
+
+			if (hit.collider.tag == "Ball")
+			{
+				centerTarget = hit.collider.transform;
+			}
+			else 
+			{
+				centerTarget = null;
+			}
 		}
 
 		float ratio = (centerVector.magnitude - 0.12f) / (centerVector.magnitude);
@@ -94,12 +118,19 @@ public class StaffDirection : MonoBehaviour
 			float distanceTemp = transform.right.magnitude;
 			Vector3 vectorPos = - transform.right * distancePos / (transform.right.magnitude);
 			
-			staffTarget.transform.position = transform.position + vectorPos;
+			staffTarget.transform.position = transform.position + vectorPos + new Vector3(0, 0.14f, 0);
+		}
+		else
+		{
+			staffTarget.transform.position = transform.position + directionVector + new Vector3(0, 0.14f, 0 );
 		}
 
-		float ratioCueDirection = directionVector.magnitude / initDistance;
+		Vector3 distanceBallTarget = transform.position - staffTarget.transform.position;
+		distanceBallTarget.y = 0;
+		float ratioCueDirection = distanceBallTarget.magnitude / initDistance;
 
 		staffDirection.transform.localScale = new Vector3(ratioCueDirection, 1, 1);
-		staffDirection.transform.position = (staffTarget.transform.position + transform.position) / 2;
+		staffDirection.transform.position = (staffTarget.transform.position + transform.position) / 2 
+			+ new Vector3(0, 0.07f, 0);
 	}
 }

@@ -205,8 +205,13 @@ public class GameManager : MonoBehaviour
 		if (allBallStatic)
 		{
 			cue.SetActive(true);
-			staffDirection.SetActive(true);
-			staffTarget.SetActive(true);
+
+			Cue cueScripts = cue.GetComponent<Cue>();
+			if (!cueScripts.staffMoveEnabled)
+			{
+				staffDirection.SetActive(true);
+				staffTarget.SetActive(true);
+			}
 
 			if (CueBall.ballFirstShoted && (!breaked))
 			{
