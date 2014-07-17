@@ -664,14 +664,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d863e12479b44db4b5183d5b15ece1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitForce: 500
+  unitForce: 700
 --- !u!135 &120682686
 SphereCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 120682680}
-  m_Material: {fileID: 13400000, guid: 99e86ee0ad11f8d6d00011d98d76c639, type: 2}
+  m_Material: {fileID: 13400000, guid: 67db31eead11e8d6d00011d98d76c639, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -1280,7 +1280,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 318696488}
-  m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106709}
+  m_LocalRotation: {x: .707106888, y: 0, z: 0, w: .707106769}
   m_LocalPosition: {x: -5.10902596, y: 0, z: 0}
   m_LocalScale: {x: .075000003, y: .075000003, z: 1}
   m_Children:
@@ -1965,7 +1965,7 @@ GameObject:
   - 4: {fileID: 467401442}
   - 33: {fileID: 467401444}
   - 23: {fileID: 467401443}
-  - 64: {fileID: 467401445}
+  - 65: {fileID: 467401445}
   m_Layer: 0
   m_Name: rail02
   m_TagString: Untagged
@@ -2017,8 +2017,8 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 467401441}
   m_Mesh: {fileID: 4300002, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
---- !u!64 &467401445
-MeshCollider:
+--- !u!65 &467401445
+BoxCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -2027,9 +2027,8 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_SmoothSphereCollisions: 0
-  m_Convex: 0
-  m_Mesh: {fileID: 4300002, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
+  m_Size: {x: .150000006, y: .178472131, z: 3.9000001}
+  m_Center: {x: 0, y: 1.13686817e-13, z: .100000001}
 --- !u!1 &483769114
 GameObject:
   m_ObjectHideFlags: 0
@@ -2040,7 +2039,7 @@ GameObject:
   - 4: {fileID: 483769115}
   - 33: {fileID: 483769117}
   - 23: {fileID: 483769116}
-  - 64: {fileID: 483769118}
+  - 65: {fileID: 483769118}
   m_Layer: 0
   m_Name: rail06
   m_TagString: Untagged
@@ -2092,8 +2091,8 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 483769114}
   m_Mesh: {fileID: 4300008, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
---- !u!64 &483769118
-MeshCollider:
+--- !u!65 &483769118
+BoxCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -2102,9 +2101,8 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_SmoothSphereCollisions: 0
-  m_Convex: 0
-  m_Mesh: {fileID: 4300008, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
+  m_Size: {x: .150000006, y: .178472042, z: 3.9000001}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &486830242
 GameObject:
   m_ObjectHideFlags: 0
@@ -2561,7 +2559,7 @@ GameObject:
   - 4: {fileID: 610270372}
   - 33: {fileID: 610270374}
   - 23: {fileID: 610270373}
-  - 64: {fileID: 610270375}
+  - 65: {fileID: 610270376}
   m_Layer: 0
   m_Name: slate
   m_TagString: Untagged
@@ -2610,8 +2608,8 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 610270371}
   m_Mesh: {fileID: 4300046, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
---- !u!64 &610270375
-MeshCollider:
+--- !u!65 &610270376
+BoxCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -2620,9 +2618,8 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_SmoothSphereCollisions: 0
-  m_Convex: 0
-  m_Mesh: {fileID: 4300046, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
+  m_Size: {x: 9.19999981, y: .200000286, z: 5}
+  m_Center: {x: -.0125000477, y: .149999857, z: 0}
 --- !u!1 &652553144
 GameObject:
   m_ObjectHideFlags: 0
@@ -3526,7 +3523,7 @@ GameObject:
   - 4: {fileID: 985510791}
   - 33: {fileID: 985510793}
   - 23: {fileID: 985510792}
-  - 64: {fileID: 985510794}
+  - 65: {fileID: 985510794}
   m_Layer: 0
   m_Name: rail05
   m_TagString: Untagged
@@ -3578,8 +3575,8 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 985510790}
   m_Mesh: {fileID: 4300028, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
---- !u!64 &985510794
-MeshCollider:
+--- !u!65 &985510794
+BoxCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -3588,9 +3585,8 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_SmoothSphereCollisions: 0
-  m_Convex: 0
-  m_Mesh: {fileID: 4300028, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
+  m_Size: {x: .150000006, y: .178472042, z: 3.9000001}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1017334976
 GameObject:
   m_ObjectHideFlags: 0
@@ -3659,7 +3655,7 @@ GameObject:
   - 4: {fileID: 1070982165}
   - 33: {fileID: 1070982167}
   - 23: {fileID: 1070982166}
-  - 64: {fileID: 1070982168}
+  - 65: {fileID: 1070982168}
   m_Layer: 0
   m_Name: rail01
   m_TagString: Untagged
@@ -3711,8 +3707,8 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1070982164}
   m_Mesh: {fileID: 4300000, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
---- !u!64 &1070982168
-MeshCollider:
+--- !u!65 &1070982168
+BoxCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -3721,9 +3717,8 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_SmoothSphereCollisions: 0
-  m_Convex: 0
-  m_Mesh: {fileID: 4300000, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
+  m_Size: {x: .150000006, y: .17847237, z: 3.9000001}
+  m_Center: {x: 0, y: 1.19209346e-07, z: .100000001}
 --- !u!1 &1083875418
 GameObject:
   m_ObjectHideFlags: 0
@@ -5885,7 +5880,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1912717783}
-  m_LocalRotation: {x: .707106829, y: 0, z: 0, w: .707106709}
+  m_LocalRotation: {x: .707106888, y: 0, z: 0, w: .707106769}
   m_LocalPosition: {x: -2.45341206, y: -.00439113704, z: -.00853705406}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -6189,7 +6184,7 @@ GameObject:
   - 4: {fileID: 2041433323}
   - 33: {fileID: 2041433325}
   - 23: {fileID: 2041433324}
-  - 64: {fileID: 2041433326}
+  - 65: {fileID: 2041433326}
   m_Layer: 0
   m_Name: rail03
   m_TagString: Untagged
@@ -6241,8 +6236,8 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2041433322}
   m_Mesh: {fileID: 4300004, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
---- !u!64 &2041433326
-MeshCollider:
+--- !u!65 &2041433326
+BoxCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -6251,9 +6246,8 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_SmoothSphereCollisions: 0
-  m_Convex: 0
-  m_Mesh: {fileID: 4300004, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
+  m_Size: {x: .150000006, y: .178471416, z: 3.9000001}
+  m_Center: {x: 0, y: -1.19209346e-07, z: .100000001}
 --- !u!1 &2078174794
 GameObject:
   m_ObjectHideFlags: 0
@@ -6428,7 +6422,7 @@ GameObject:
   - 4: {fileID: 2120393070}
   - 33: {fileID: 2120393072}
   - 23: {fileID: 2120393071}
-  - 64: {fileID: 2120393073}
+  - 65: {fileID: 2120393073}
   m_Layer: 0
   m_Name: rail04
   m_TagString: Untagged
@@ -6480,8 +6474,8 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2120393069}
   m_Mesh: {fileID: 4300006, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
---- !u!64 &2120393073
-MeshCollider:
+--- !u!65 &2120393073
+BoxCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -6490,9 +6484,8 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_SmoothSphereCollisions: 0
-  m_Convex: 0
-  m_Mesh: {fileID: 4300006, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
+  m_Size: {x: .150000006, y: .178471416, z: 3.9000001}
+  m_Center: {x: 0, y: -1.19209346e-07, z: .100000001}
 --- !u!1 &2145422013
 GameObject:
   m_ObjectHideFlags: 0
