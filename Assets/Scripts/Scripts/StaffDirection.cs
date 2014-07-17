@@ -87,7 +87,6 @@ public class StaffDirection : MonoBehaviour
 			Vector3 vectorDistance = ballTarget.transform.position - transform.position;
 			float angle = Vector3.Angle( - transform.right, vectorDistance);
 			float b = vectorDistance.magnitude * Mathf.Sin((angle * Mathf.PI)/180);
-			Debug.Log(b);
 			float a = Mathf.Abs(vectorDistance.magnitude * Mathf.Cos((angle * Mathf.PI)/180));
 			float e = Mathf.Sqrt(Mathf.Abs(distanceBall * distanceBall - b * b));
 			float distancePos = a - e;
