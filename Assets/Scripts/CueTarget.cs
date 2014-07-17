@@ -5,32 +5,40 @@ public class CueTarget : MonoBehaviour {
 	private GameObject ballDirection;
 	public Vector3 directionVector;
 
+	private GameObject cue;
+	private StaffDirection staffDirection;
+
 	void Start () {
 		ballDirection = GameObject.Find("BallDirection");
+		cue = GameObject.Find("Cue");
+		staffDirection = cue.GetComponent<StaffDirection> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		SetUpBallDirection ();
 	}
 
-	void OnCollisionStay(Collision other)
+	void SetUpBallDirection()
 	{
-		if (other.gameObject.tag == "Ball")
+		if (staffDirection.ballTarget != null)
 		{
 			ballDirection.SetActive(true);
-			ballDirection.transform.position = new Vector3 (other.transform.position.x,
-			                                                other.transform.position.y + 0.12f, 
-			                                                other.transform.position.z);
+			ballDirection.transform.position = new Vector3 (staffDirection.ballTarget.transform.position.x,
+			                                                ballDirection.transform.position.y,
+			                                                staffDirection.ballTarget.transform.position.z);
 
-			directionVector = other.transform.position - transform.position;
-			float angleY = Vector3.Angle(directionVector, - Vector3.right);
-			if (directionVector.z < 0)
-				angleY = -angleY;
+			directionVector = staffDirection.ballTarget.transform.position - transform.position;
+			directionVector.y = 0;
+			ballDirection.transform.right = - directionVector.normalized;
 
-			ballDirection.transform.eulerAngles = new Vector3(ballDirection.transform.eulerAngles.x,
-			                                                  angleY,
-			                                                  ballDirection.transform.eulerAngles.z);
+//			float angleY = Vector3.Angle(Vector3.forward , directionVector);
+//			if (directionVector.z < 0)
+//				angleY = -angleY;
+//
+//			ballDirection.transform.eulerAngles = new Vector3(ballDirection.transform.eulerAngles.x,
+//			                                                  angleY,
+//			                                                  ballDirection.transform.eulerAngles.z);
 		}
 		else
 		{
