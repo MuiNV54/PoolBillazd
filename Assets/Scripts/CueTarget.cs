@@ -23,10 +23,15 @@ public class CueTarget : MonoBehaviour {
 	{
 		if (staffDirection.ballTarget != null)
 		{
+			Vector3 fromBallTargetToCamera = Camera.main.transform.position - staffDirection.ballTarget.transform.position;
+			Vector3 staffDirectionVector = fromBallTargetToCamera * (0.14f / fromBallTargetToCamera.y);
+
 			ballDirection.SetActive(true);
-			ballDirection.transform.position = new Vector3 (staffDirection.ballTarget.transform.position.x,
-			                                                ballDirection.transform.position.y,
-			                                                staffDirection.ballTarget.transform.position.z);
+			Vector3 newPosition = new Vector3 (staffDirection.ballTarget.transform.position.x + staffDirectionVector.x,
+			                                   ballDirection.transform.position.y,
+			                                   staffDirection.ballTarget.transform.position.z + staffDirectionVector.z);
+
+			ballDirection.transform.position = newPosition;
 
 			directionVector = staffDirection.ballTarget.transform.position - transform.position;
 			directionVector.y = 0;
