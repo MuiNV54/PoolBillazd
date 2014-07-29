@@ -46,6 +46,22 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Energy Bar Toolkit\Example\Scripts\AnimationPlayer.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Example\Scripts\BarOptionsGUI.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Example\Scripts\BarOptionsGUIMulti.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Example\Scripts\BarPresentation.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Example\Scripts\EnergyBarPresentationColorize.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Example\Scripts\MultiBarSliders.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Scripts\EnergyBar.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Scripts\EnergyBarBase.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Scripts\EnergyBarRenderer.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Scripts\EnergyBarRepeatRenderer.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Scripts\EnergyBarSequenceRenderer.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Scripts\EnergyBarTransformRenderer.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Scripts\MadCommons\MadDebug.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Scripts\MadCommons\MadMatrix.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Scripts\MadCommons\MadTransform.cs" />
+     <Compile Include="Assets\Energy Bar Toolkit\Scripts\SimpleEvent.cs" />
      <Compile Include="Assets\RailController.cs" />
      <Compile Include="Assets\Scripts\CueTarget.cs" />
      <Compile Include="Assets\Scripts\Scripts\BallVelocity.cs" />
@@ -57,6 +73,17 @@
      <Compile Include="Assets\Scripts\Scripts\ProgressBarTest.cs" />
      <Compile Include="Assets\Scripts\Scripts\ProgressManager.cs" />
      <Compile Include="Assets\Scripts\Scripts\StaffDirection.cs" />
+     <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\ExpandFillShaderPre.shader" />
+     <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\UnlitShaderPre.shader" />
+     <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\RadialFillShaderPre.shader" />
+     <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\VerticalFillShader.shader" />
+     <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\HorizontalFillShaderPre.shader" />
+     <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\RadialFillShader.shader" />
+     <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\UnlitShader.shader" />
+     <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\ExpandFillShader.shader" />
+     <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\VerticalFillShaderPre.shader" />
+     <None Include="Assets\Energy Bar Toolkit\Resources\Shaders\HorizontalFillShader.shader" />
+     <None Include="Assets\Energy Bar Toolkit\README.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
