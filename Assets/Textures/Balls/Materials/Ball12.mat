@@ -10,6 +10,7 @@ Material:
   m_Shader: {fileID: 3, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: []
   m_CustomRenderQueue: -1
+  m_CustomRenderQueue: -1
   m_SavedProperties:
     serializedVersion: 2
     m_TexEnvs:
@@ -24,7 +25,7 @@ Material:
       data:
         first:
           name: _Shininess
-        second: .078125
+        second: .048891034
     m_Colors:
       data:
         first:

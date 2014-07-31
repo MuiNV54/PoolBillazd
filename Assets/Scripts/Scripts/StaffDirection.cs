@@ -122,7 +122,7 @@ public class StaffDirection : MonoBehaviour
 		}
 		else
 		{
-			staffTarget.transform.position = transform.position + directionVector;
+			staffTarget.transform.position = transform.position + directionVector ;
 		}
 
 		Vector3 distanceBallTarget = transform.position - staffTarget.transform.position;
@@ -130,6 +130,7 @@ public class StaffDirection : MonoBehaviour
 		float ratioCueDirection = distanceBallTarget.magnitude / initDistance;
 
 		staffDirection.transform.localScale = new Vector3(ratioCueDirection, 1, 1);
-		staffDirection.transform.position = (staffTarget.transform.position + transform.position) / 2;
+		staffDirection.transform.position = (staffTarget.transform.position + transform.position) / 2 
+			+ new Vector3(0, 0.07f, 0);
 	}
 }

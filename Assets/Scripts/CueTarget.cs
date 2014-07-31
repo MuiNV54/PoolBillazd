@@ -31,14 +31,12 @@ public class CueTarget : MonoBehaviour {
 		{
 			Vector3 fromBallTargetToCamera = Camera.main.transform.position - staffDirection.ballTarget.transform.position;
 			Vector3 staffDirectionVector = fromBallTargetToCamera * (0.14f / fromBallTargetToCamera.y);
-
 			ballDirection.SetActive(true);
 			Vector3 newPosition = new Vector3 (staffDirection.ballTarget.transform.position.x + staffDirectionVector.x,
 			                                   ballDirection.transform.position.y,
 			                                   staffDirection.ballTarget.transform.position.z + staffDirectionVector.z);
-
+			
 			ballDirection.transform.position = newPosition;
-
 			directionVector = staffDirection.ballTarget.transform.position - transform.position;
 			directionVector.y = 0;
 			ballDirection.transform.right = - directionVector.normalized;
@@ -69,7 +67,6 @@ public class CueTarget : MonoBehaviour {
 
 		//set length of ballDirection and ballReplection
 		float currentAngle = Vector3.Angle (-transform.right, directionVector);
-		Debug.Log (currentAngle);
 
 		float scaleBallReplectionValue = Mathf.Sin (currentAngle * Mathf.PI / 180);
 		float scaleBallDirectionValue = Mathf.Cos (currentAngle * Mathf.PI / 180);
