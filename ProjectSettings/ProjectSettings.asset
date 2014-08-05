@@ -11,7 +11,7 @@ PlayerSettings:
   targetResolution: 0
   accelerometerFrequency: 60
   companyName: MuiNV
-  productName: Pool8
+  productName: PoolBillard
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   defaultScreenWidth: 1024
@@ -73,7 +73,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  iPhoneBundleIdentifier: com.MuiNV.Pool8
+  iPhoneBundleIdentifier: com.MuiNV.PoolBillard
   productGUID: 3d2070b4c1325964d908425bc17fe14c
   iPhoneBundleVersion: 1.0
   AndroidBundleVersionCode: 1
@@ -104,8 +104,8 @@ PlayerSettings:
   iPadHighResLandscapeSplashScreen: {fileID: 0}
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
-  AndroidKeystoreName: 
-  AndroidKeyaliasName: 
+  AndroidKeystoreName: /Users/thevinh92/Documents/KeyStore/CartoonPuzzle.keystore
+  AndroidKeyaliasName: cartoonpuzzle
   resolutionDialogBanner: {fileID: 0}
   m_BuildTargetIcons:
   - m_BuildTarget: 

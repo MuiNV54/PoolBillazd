@@ -21,7 +21,7 @@ public class Cue : MonoBehaviour
 	Vector3 beginPos;
 	float oldStaffAngle;
 
-	private GameObject gameManager;
+	public GameObject gameManager;
 	private GameManager _gameManager;
 	private CueBall cueBall;
 
@@ -33,6 +33,8 @@ public class Cue : MonoBehaviour
 	{
 		transform.position = target.transform.position;
 		transform.eulerAngles = Vector3.zero;
+
+		_gameManager = gameManager.GetComponent<GameManager> ();
 //		transform.eulerAngles = new Vector3 (transform.eulerAngles.x, 0, transform.eulerAngles.z);
 
 		staffMoveEnabled = false;
@@ -68,15 +70,6 @@ public class Cue : MonoBehaviour
 		{
 			if (Physics.Raycast(ray,out hit, 200.0f))
 			{
-			//Debug.DrawLine(ray.origin, hit.point);
-//			if (hit.collider.gameObject.tag == "Cue")
-//			{
-//				if (Input.GetMouseButtonDown(0))
-//				{
-//					staffRotationEnabled = true;
-//				}
-				//			}
-
 				if (Input.GetMouseButtonDown(0))
 				{
 					if (hit.collider.tag != "DisplayStaff")
@@ -84,14 +77,7 @@ public class Cue : MonoBehaviour
 						staffRotationEnabled = true;
 						beginPoint = hit.point;
 
-						if (-transform.forward.x <= 0)
-						{
-							oldStaffAngle = Vector3.Angle ( - Vector3.forward, - transform.forward);
-						}
-						else 
-						{
-							oldStaffAngle = - Vector3.Angle ( - Vector3.forward, - transform.forward);
-						}
+						oldStaffAngle = transform.eulerAngles.y;
 					}
 				}
 
@@ -149,11 +135,13 @@ public class Cue : MonoBehaviour
 		newPointAngle = Vector3.Angle (Vector3.forward, newHitPointDirection);
 		oldPointAngle = Vector3.Angle (Vector3.forward, oldHitPointDiretion);
 
-		float adjustAngle = newPointAngle - oldPointAngle;
-		if ((newHitPointDirection.x < 0) && (oldHitPointDiretion.x < 0))
-		{
+		float adjustAngle = Vector3.Angle(oldHitPointDiretion, newHitPointDirection);
+
+		// Defind the adjustAngle is negative or positive
+		float angle = FindAngle (oldHitPointDiretion, newHitPointDirection, Vector3.up);
+
+		if (angle < 0)
 			adjustAngle *= -1;
-		}
 
 		transform.localEulerAngles =new Vector3(transform.localEulerAngles.x,
 		                                        oldStaffAngle + adjustAngle,
@@ -182,6 +170,8 @@ public class Cue : MonoBehaviour
 			transform.position = oldStaffPosition - transform.right * distanceStaffMove;
 			pos = transform.position;
 		}
+
+		_gameManager.ballInHand = false;
 		/// Send the Cue position to the opponent
 		this.NetworkCom.SendCuePos(pos);
 	}
@@ -192,21 +182,24 @@ public class Cue : MonoBehaviour
 		displayStaff.transform.position = oldDisplayStaffPosition;
 		
 		Vector3 forceToBallDirection = target.transform.position - transform.position;
+
 		forceToBallDirection.y = 0;
+		_gameManager.checkedBallCount = false;
+
 		cueBall.ForceToBall(forceToBallDirection);
 		/// Send the force of the cue ball to the opponent
-		this.NetworkCom.SendForceToBall(forceToBallDirection);
+//		this.NetworkCom.SendForceToBall(forceToBallDirection);
 
 		transform.position = oldStaffPosition;
 	}
 
 	void UpdateFromPeer()
 	{
-		if ( this.NetworkCom.ForceToBall != Vector3.zero)
-		{
-			cueBall.ForceToBall(this.NetworkCom.ForceToBall);
-			this.NetworkCom.ForceToBall = Vector3.zero;
-		}
+//		if ( this.NetworkCom.ForceToBall != Vector3.zero)
+//		{
+//			cueBall.ForceToBall(this.NetworkCom.ForceToBall);
+//			this.NetworkCom.ForceToBall = Vector3.zero;
+//		}
 		if (this.NetworkCom.CueAngle != 0.0f)
 		{
 			transform.localEulerAngles = new Vector3(transform.localEulerAngles.x,
@@ -219,5 +212,20 @@ public class Cue : MonoBehaviour
 			transform.position = this.NetworkCom.CuePos;
 		}
 		isPlayable = this.NetworkCom.isNextPlayer;
+		_gameManager.ballInHand = this.NetworkCom.foul;
+	}
+
+	public float FindAngle(Vector3 fromVector, Vector3 toVector, Vector3 upVector)
+	{
+		if (toVector == Vector3.zero)
+		{
+			return 0.0f;
+		}
+		
+		float angle = Vector3.Angle (fromVector, toVector);
+		Vector3 normal = Vector3.Cross (fromVector, toVector);
+		angle *= Mathf.Sign (Vector3.Dot (normal, upVector));
+		angle *= Mathf.Deg2Rad;
+		return angle;
 	}
 }

@@ -20,8 +20,19 @@ public class NetworkClient : PhotonClient
 	public bool isNextPlayer;
 	public Vector3 ForceToBall = Vector3.zero;
 	public float CueAngle = 0.0f;
+	public int energyBarPercent = 0;
 	public Vector3 CuePos = Vector3.zero;
 	public int turnStyle = 0;
+	public bool foul;
+	public bool cueBallFail = false;
+	public bool checkFirstTurn = false;
+
+	public float[] ballPosX = new float[16];
+	public float[] ballPosY = new float[16];
+	public float[] ballPosZ = new float[16];
+
+	public bool endGame = false;
+	public string nameWin = String.Empty;
 
 	/// States of the application
 	public enum NetworkStateOption : byte
@@ -54,15 +65,33 @@ public class NetworkClient : PhotonClient
 		ForceApplied = 4,
 		CueRotation = 9,
 		CueDragging = 16, 
-		StyleNoti = 25
+		StyleNoti = 25,
+		BallInHand = 36,
+		EnergyBarValue = 49,
+		EndGame = 64,
+		NameWin = 81,
+		CueBallFail = 100,
+		CheckFirstTurn = 121,
+		BallPosX = 144,
+		BallPosY = 169,
+		BallPosZ = 196
 	}
 	public enum GameEventKey : byte
 	{
 		boolNext = 2,
-		force = 3,
-		rotation = 5,
-		dragging = 8,
-		style = 13
+		force = 6,
+		rotation = 12,
+		dragging = 20,
+		style = 30,
+		BallInHand = 42,
+		EnergyBarValue = 56,
+		EndGame = 72,
+		NameWin = 90,
+		CueBallFail = 110,
+		CheckFirstTurn = 132,
+		BallPosX = 156,
+		BallPosY = 182,
+		BallPosZ = 210
 	}
 	/// This demo supports only Name but could be extended with more properties easily.</summary>
 	public enum NetworkActorProperties : byte { Name = (byte)'n' }
@@ -194,11 +223,59 @@ public class NetworkClient : PhotonClient
 			// Store the received CueAngle
 			CueAngle = (float)evData[(byte)GameEventKey.rotation];
 			break;
+
+		case (byte)GameEventCode.BallPosX:
+			ballPosX = (float[])evData[(byte)GameEventKey.BallPosX];
+			break;
+
+		case (byte)GameEventCode.BallPosY:
+			ballPosY = (float[])evData[(byte)GameEventKey.BallPosY];
+			break;
+		
+		case (byte)GameEventCode.BallPosZ:
+			ballPosZ = (float[])evData[(byte)GameEventKey.BallPosZ];
+			break;
+
+		/// Process the display timerBar
+		case (byte)GameEventCode.EnergyBarValue:
+			// Store the received timerValue
+			energyBarPercent = (int)evData[(byte)GameEventKey.EnergyBarValue];
+			break;
+
+		/// Process to send state of cueball in pocket
+		case (byte)GameEventCode.CueBallFail:
+			cueBallFail = (bool)evData[(byte)GameEventKey.CueBallFail];
+			break;
+
+		/// Process to check first turn definded
+		case (byte)GameEventCode.CheckFirstTurn:
+			checkFirstTurn = (bool)evData[(byte)GameEventKey.CheckFirstTurn];
+			break;
+
 		/// Process to change Players turn
 		case (byte)GameEventCode.nextPlayer:
 			// Store the received isNextPlayer
 			isNextPlayer = (bool)evData[(byte)GameEventKey.boolNext];
 			break;
+
+		/// Process to change name of player win
+		case (byte)GameEventCode.NameWin:
+			// Store the received isNextPlayer
+			nameWin = (string)evData[(byte)GameEventKey.NameWin];
+			break;
+
+		/// Process to send EndGame
+		case (byte)GameEventCode.EndGame:
+			// Store the received isNextPlayer
+			endGame = (bool)evData[(byte)GameEventKey.EndGame];
+			break;
+
+		/// Process to change ballinHands
+		case (byte)GameEventCode.BallInHand:
+			// Store the receied BallInHand
+			foul = (bool)evData[(byte)GameEventKey.BallInHand];
+			break;
+		
 		/// Process to get Ball stuff from opponent 
 		case (byte)GameEventCode.StyleNoti:
 			// Store the received style
@@ -267,6 +344,21 @@ public class NetworkClient : PhotonClient
 		this.Peer.OpRaiseEvent((byte)GameEventCode.CueRotation, gameEvent, false); // call raiseEvent with our content and anevent code
 	}
 
+	/// Angle for cue to rotate
+	public void SendNameWin(string namewin)
+	{
+		Hashtable gameEvent = new Hashtable(); // the custom event's data
+		gameEvent.Add((byte)GameEventKey.NameWin, namewin);
+		this.Peer.OpRaiseEvent((byte)GameEventCode.NameWin, gameEvent, false); // call raiseEvent with our content and anevent code
+	}
+
+	public void SendEnergyValue(int energyBarPercent)
+	{
+		Hashtable gameEvent = new Hashtable(); // the custom event's data
+		gameEvent.Add((byte)GameEventKey.EnergyBarValue, energyBarPercent);
+		this.Peer.OpRaiseEvent((byte)GameEventCode.EnergyBarValue, gameEvent, false); // call raiseEvent with our content and anevent code
+	}
+
 	/// Position of cue
 	public void SendCuePos(Vector3 Pos)
 	{
@@ -281,6 +373,55 @@ public class NetworkClient : PhotonClient
 		Hashtable gameEvent = new Hashtable(); // the custom event's data
 		gameEvent.Add((byte)GameEventKey.boolNext, nextTurn);
 		this.Peer.OpRaiseEvent((byte)GameEventCode.nextPlayer, gameEvent, true); // call raise Event with our content and an event code
+	}
+
+	public void SendBallFail(bool ballfail)
+	{
+		Hashtable gameEvent = new Hashtable(); // the custom event's data
+		gameEvent.Add((byte)GameEventKey.CueBallFail, ballfail);
+		this.Peer.OpRaiseEvent((byte)GameEventCode.CueBallFail, gameEvent, false); // call raise Event with our content and an event code
+	}
+
+	public void SendEndGame(bool endgame)
+	{
+		Hashtable gameEvent = new Hashtable(); // the custom event's data
+		gameEvent.Add((byte)GameEventKey.CueBallFail, endgame);
+		this.Peer.OpRaiseEvent((byte)GameEventCode.CueBallFail, gameEvent, false); // call raise Event with our content and an event code
+	}
+
+	public void SendCheckFirstTurn(bool firstTurn)
+	{
+		Hashtable gameEvent = new Hashtable(); // the custom event's data
+		gameEvent.Add((byte)GameEventKey.CheckFirstTurn, firstTurn);
+		this.Peer.OpRaiseEvent((byte)GameEventCode.CheckFirstTurn, gameEvent, false); // call raise Event with our content and an event code
+	}
+
+	public void SendBallPosX(float[] ballposX)
+	{
+		Hashtable gameEvent = new Hashtable(); // the custom event's data
+		gameEvent.Add((byte)GameEventKey.BallPosX, ballposX);
+		this.Peer.OpRaiseEvent((byte)GameEventCode.BallPosX, gameEvent, false); // call raise Event with our content and an event code
+	}
+
+	public void SendBallPosY(float[] ballposY)
+	{
+		Hashtable gameEvent = new Hashtable(); // the custom event's data
+		gameEvent.Add((byte)GameEventKey.BallPosY, ballposY);
+		this.Peer.OpRaiseEvent((byte)GameEventCode.BallPosY, gameEvent, false); // call raise Event with our content and an event code
+	}
+
+	public void SendBallPosZ(float[] ballposZ)
+	{
+		Hashtable gameEvent = new Hashtable(); // the custom event's data
+		gameEvent.Add((byte)GameEventKey.BallPosZ, ballposZ);
+		this.Peer.OpRaiseEvent((byte)GameEventCode.BallPosZ, gameEvent, false); // call raise Event with our content and an event code
+	}
+
+	public void SendBallInHand(bool foul)
+	{
+		Hashtable gameEvent = new Hashtable(); // the custom event's data
+		gameEvent.Add((byte)GameEventKey.BallInHand, foul);
+		this.Peer.OpRaiseEvent((byte)GameEventCode.BallInHand, gameEvent, true); // call raise Event with our content and an event code
 	}
 
 	/// Style sends to the opponent
