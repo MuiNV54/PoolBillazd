@@ -6,15 +6,16 @@ public class BallVelocity : MonoBehaviour
 	public bool isStatic;
 	public bool isFinished;
 	public bool isAddedToArray;
-	public bool cueBallFail = false;
 
 	public Vector3 firstPosition;
 	public float MinAcceptableVelocity = 0.1f;
 	public float MinAcceptableEulerangle = 0.1f;
 
-
 	private GameObject gameManager;
 	private GameManager _gameManager;
+
+	private GameObject cue;
+	private Cue _cue;
 
 	void Start()
 	{
@@ -25,6 +26,9 @@ public class BallVelocity : MonoBehaviour
 
 		gameManager = GameObject.FindGameObjectWithTag("GameManager");
 		_gameManager = gameManager.GetComponent<GameManager> ();
+
+		cue = GameObject.Find("Cue");
+		_cue = cue.GetComponent<Cue> ();
 	}
 
 	void Update () 
@@ -42,8 +46,6 @@ public class BallVelocity : MonoBehaviour
 		{
 			isStatic = false;
 		}
-
-		OnCueBallFail ();
 	}
 
 	void OnTriggerEnter(Collider other)
@@ -60,26 +62,49 @@ public class BallVelocity : MonoBehaviour
 				}
 				else
 				{
-					Debug.Log("Thua CMMR!");
+					OnEndGame();
 				}
 			}
-			else 
+			else
 			{
-				rigidbody.angularVelocity = Vector3.zero;
-				rigidbody.constraints = RigidbodyConstraints.None;
-				cueBallFail = true;
+				_gameManager.cueBallFail = true;
 			}
 		}
 	}
 
-	void OnCueBallFail()
+	void OnCollisionEnter(Collision other)
 	{
-		if ((cueBallFail) && (_gameManager.allBallStatic))
+		if (other.gameObject.tag == "Rail")
 		{
-			transform.position = firstPosition;
-			rigidbody.velocity = Vector3.zero;
-			rigidbody.constraints = RigidbodyConstraints.FreezePositionY;
-			cueBallFail = false;
+			if (_gameManager.isOnTurn)
+			{
+				if (transform.rigidbody.velocity.magnitude >= 0.1f)
+					_gameManager.ballImpactRail = true;
+			}
 		}
+	}
+
+	void OnEndGame()
+	{
+		if (_gameManager.ball8Enable)
+		{
+			GameManager.nameWin = _gameManager.turnStyle.ToString();
+		}
+		else
+		{
+			if (_gameManager.turnStyle == 1)
+			{
+				GameManager.nameWin = "2";
+			}
+			else
+			{
+				GameManager.nameWin = "1";
+			}
+		}
+		
+		_gameManager.gameEnd = true;
+
+		this._cue.NetworkCom.SendNameWin (GameManager.nameWin);
+		this._cue.NetworkCom.SendEndGame (true);
 	}
 }

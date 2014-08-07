@@ -326,7 +326,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 82384885}
-  m_LocalRotation: {x: -.00370643009, y: .0374351591, z: -.00477928063, w: .99928081}
+  m_LocalRotation: {x: -.0052715214, y: .422594845, z: -.00296479859, w: .906298518}
   m_LocalPosition: {x: 4.19999981, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -368,6 +368,7 @@ MonoBehaviour:
   maxDistanceStaffMove: -3
   staffMoveEnabled: 0
   staffRotationEnabled: 0
+  gameManager: {fileID: 487185214}
   NetworkCom: {fileID: 1771913135}
   isPlayable: 0
 --- !u!54 &82384889
@@ -574,7 +575,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -606,7 +606,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 120682680}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.9710629, y: 2.95770502, z: -.229115009}
+  m_LocalPosition: {x: 3.5480969, y: 2.95770502, z: -.27840519}
   m_LocalScale: {x: 1.29999995, y: 1.29999995, z: 1.29999995}
   m_Children: []
   m_Father: {fileID: 0}
@@ -667,6 +667,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitForce: 700
+  ballFirstShoted: 0
+  firstBallCollision: 
+  wrongBall: 0
+  cueBallMovable: 0
+  ballCollision: 0
+  firstPosition: {x: 0, y: 0, z: 0}
 --- !u!135 &120682686
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -693,7 +699,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -1218,7 +1223,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -1876,7 +1880,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -1982,7 +1985,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -1999,7 +2001,7 @@ GameObject:
   - 65: {fileID: 467401445}
   m_Layer: 0
   m_Name: rail02
-  m_TagString: Untagged
+  m_TagString: Rail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2073,7 +2075,7 @@ GameObject:
   - 65: {fileID: 483769118}
   m_Layer: 0
   m_Name: rail06
-  m_TagString: Untagged
+  m_TagString: Rail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2223,16 +2225,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42b0c6c64a88945b2a6b7384f4034c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  breaked: 0
+  ballInHand: 0
+  foul: 0
+  cueBallFail: 0
+  ball8Enable: 0
+  gameEnd: 0
+  checkFirstTurn: 0
+  timerBar1: {fileID: 2115944711}
+  timerBar2: {fileID: 639922744}
+  energyValue: 0
+  turnTimer: 0
+  resetTurnTimer: 0
+  ballImpactRail: 0
+  balls: []
   staffDirection: {fileID: 1912717783}
   staffTarget: {fileID: 318696488}
+  cueBall: {fileID: 120682680}
   allBallStatic: 0
   isOnTurn: 0
   isForceNextTurn: 0
   currentBallFinished: 0
   turnStyle: 0
   playerCountball: 0
+  preBallFinished: 0
   prePlayerCountBall: 0
   nextTurnActive: 0
+  checkedBallCount: 0
   ballScaleSize: {x: .300000012, y: .300000012, z: .300000012}
   HiglightStyle:
     m_Name: 
@@ -2632,7 +2651,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -2707,6 +2725,153 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 9.19999981, y: .200000286, z: 5}
   m_Center: {x: -.0125000477, y: .149999857, z: 0}
+--- !u!1 &639922744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 100000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+  m_PrefabInternal: {fileID: 1638212031}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 639922747}
+  - 114: {fileID: 639922746}
+  - 114: {fileID: 639922745}
+  m_Layer: 0
+  m_Name: CircleBar2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &639922745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff,
+    type: 2}
+  m_PrefabInternal: {fileID: 1638212031}
+  m_GameObject: {fileID: 639922744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77830493bd83da7498a26ed1cb510a02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  texturesBackground:
+  - texture: {fileID: 2800000, guid: a93e9e52ff2fa4e409eace36b13631aa, type: 3}
+    color: {r: 1, g: 1, b: 1, a: 1}
+  texturesForeground: []
+  pivot: 0
+  guiDepth: 1
+  anchorObject: {fileID: 0}
+  anchorCamera: {fileID: 0}
+  positionSizeFromTransform: 0
+  positionSizeFromTransformNormalized: 0
+  premultipliedAlpha: 0
+  labelEnabled: 0
+  labelSkin: {fileID: 0}
+  labelPosition: {x: 0, y: 0}
+  labelPositionNormalized: 0
+  labelFormat: '{cur}/{max}'
+  labelColor: {r: 1, g: 1, b: 1, a: 1}
+  labelOutlineEnabled: 1
+  labelOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+  effectSmoothChange: 1
+  effectSmoothChangeSpeed: .5
+  storedScreenWidth: 282
+  storedScreenHeight: 451
+  screenPosition: {x: 20, y: 380}
+  screenPositionNormalized: 0
+  size: {x: 50, y: 50}
+  sizeNormalized: 0
+  screenPositionCalculateSize: 0
+  textureBackground: {fileID: 0}
+  textureBackgroundColor: {r: 1, g: 1, b: 1, a: 1}
+  textureBar: {fileID: 2800000, guid: 6b6e183ebeeb1b54ea62bf42de43fbb1, type: 3}
+  textureBarColorType: 0
+  textureBarColor: {r: .365671635, g: 1, b: .38785094, a: 1}
+  textureBarGradient:
+    key0:
+      serializedVersion: 2
+      rgba: 4294967295
+    key1:
+      serializedVersion: 2
+      rgba: 4294967295
+    key2:
+      serializedVersion: 2
+      rgba: 0
+    key3:
+      serializedVersion: 2
+      rgba: 0
+    key4:
+      serializedVersion: 2
+      rgba: 0
+    key5:
+      serializedVersion: 2
+      rgba: 0
+    key6:
+      serializedVersion: 2
+      rgba: 0
+    key7:
+      serializedVersion: 2
+      rgba: 0
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  textureForeground: {fileID: 0}
+  textureForegroundColor: {r: 1, g: 1, b: 1, a: 1}
+  growDirection: 4
+  radialRotatePoint: 0
+  radialCustomCenter: {x: 0, y: 0}
+  radialOffset: .75
+  radialLength: 1
+  effectBurn: 0
+  effectBurnTextureBar: {fileID: 0}
+  effectBurnTextureBarColor: {r: 1, g: 0, b: 0, a: 1}
+  effectBlink: 0
+  effectBlinkValue: .200000003
+  effectBlinkRatePerSecond: 1
+  effectBlinkColor: {r: 1, g: 1, b: 1, a: 0}
+--- !u!114 &639922746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 11400002, guid: 2b94337551721a44cbdc2e6bae297cff,
+    type: 2}
+  m_PrefabInternal: {fileID: 1638212031}
+  m_GameObject: {fileID: 639922744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2bfc393ba3e9ba4886cecff90d9a611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  valueCurrent: 10
+  valueMin: 0
+  valueMax: 100
+  animationEnabled: 0
+  animValueF: 0
+--- !u!4 &639922747
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+  m_PrefabInternal: {fileID: 1638212031}
+  m_GameObject: {fileID: 639922744}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
 --- !u!1 &652553144
 GameObject:
   m_ObjectHideFlags: 0
@@ -2889,7 +3054,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -3441,7 +3605,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -3613,7 +3776,7 @@ GameObject:
   - 65: {fileID: 985510794}
   m_Layer: 0
   m_Name: rail05
-  m_TagString: Untagged
+  m_TagString: Rail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3745,7 +3908,7 @@ GameObject:
   - 65: {fileID: 1070982168}
   m_Layer: 0
   m_Name: rail01
-  m_TagString: Untagged
+  m_TagString: Rail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4166,145 +4329,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
-  firstPosition: {x: 0, y: 0, z: 0}
-  MinAcceptableVelocity: .100000001
-  MinAcceptableEulerangle: .100000001
---- !u!1 &1273219431
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1273219432}
-  - 65: {fileID: 1273219433}
-  m_Layer: 0
-  m_Name: pocket2_collider2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1273219432
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1273219431}
-  m_LocalRotation: {x: 0, y: .342020124, z: 0, w: .939692676}
-  m_LocalPosition: {x: -.110007048, y: -.0052652359, z: -1.98225439}
-  m_LocalScale: {x: .342616379, y: .189714521, z: .303798795}
-  m_Children: []
-  m_Father: {fileID: 483769115}
---- !u!65 &1273219433
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1273219431}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &1287746278
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 1287746280}
-  - 65: {fileID: 1287746279}
-  - 114: {fileID: 1287746281}
-  - 54: {fileID: 1287746282}
-  m_Layer: 0
-  m_Name: rail2_collider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!65 &1287746279
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1287746278}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!4 &1287746280
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1287746278}
-  m_LocalRotation: {x: -.707106829, y: -3.09086232e-08, z: -.707106829, w: 7.54979013e-08}
-  m_LocalPosition: {x: -0, y: -0, z: .0990736037}
-  m_LocalScale: {x: 3.94020414, y: .189992368, z: .247587085}
-  m_Children: []
-  m_Father: {fileID: 467401442}
---- !u!114 &1287746281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1287746278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56724c5f3de17084494ee038865249be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Normal_vector: {x: 0, y: 0, z: 1}
-  scale: 1
---- !u!54 &1287746282
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1287746278}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: .400000006
-  m_AngularDrag: .100000001
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 4
-  m_CollisionDetection: 2
---- !u!135 &1265760432
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1265760427}
-  m_Material: {fileID: 13400000, guid: 99e86ee0ad11f8d6d00011d98d76c639, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: .106651768
-  m_Center: {x: -9.64850187e-07, y: 2.57045002e-07, z: 5.88596038e-07}
---- !u!114 &1265760433
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1265760427}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5214fa5fd22a45cf8ab9943801bfd02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isStatic: 0
-  isFinished: 0
-  isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -4518,7 +4542,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -4583,11 +4606,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
       propertyPath: storedScreenWidth
-      value: 283
+      value: 282
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
       propertyPath: storedScreenHeight
-      value: 452
+      value: 451
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
       propertyPath: textureBackground
@@ -4599,19 +4622,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
       propertyPath: size.x
-      value: 30
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
       propertyPath: size.y
-      value: 30
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
       propertyPath: screenPosition.x
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
       propertyPath: screenPosition.y
-      value: 240
+      value: 530
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
       propertyPath: labelEnabled
@@ -4628,6 +4651,14 @@ Prefab:
     - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
       propertyPath: radialOffset
       value: .75
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: m_Name
+      value: CircleBar1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: textureBarColorType
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
@@ -4905,7 +4936,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -5050,7 +5080,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -5480,6 +5509,110 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1624799841}
   m_Mesh: {fileID: 4300070, guid: e7b4bf574125d0c499d41c87db4f1bf2, type: 3}
+--- !u!1001 &1638212031
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: texturesBackground.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: m_Name
+      value: CircleBar2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: texturesBackground.Array.data[0].texture
+      value: 
+      objectReference: {fileID: 2800000, guid: a93e9e52ff2fa4e409eace36b13631aa, type: 3}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: texturesBackground.Array.data[0].color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: texturesBackground.Array.data[0].color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: texturesBackground.Array.data[0].color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: texturesBackground.Array.data[0].color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: storedScreenWidth
+      value: 282
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: storedScreenHeight
+      value: 451
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: screenPositionCalculateSize
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: textureBackground
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: size.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: size.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: screenPosition.y
+      value: 380
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: radialOffset
+      value: .75
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+      propertyPath: screenPosition.x
+      value: 20
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 2b94337551721a44cbdc2e6bae297cff, type: 2}
+  m_RootGameObject: {fileID: 639922744}
+  m_IsPrefabParent: 0
+  m_IsExploded: 1
 --- !u!1 &1674694034
 GameObject:
   m_ObjectHideFlags: 0
@@ -5753,7 +5886,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -5835,8 +5967,13 @@ MonoBehaviour:
   isNextPlayer: 0
   ForceToBall: {x: 0, y: 0, z: 0}
   CueAngle: 0
+  energyBarPercent: 0
   CuePos: {x: 0, y: 0, z: 0}
   turnStyle: 0
+  foul: 0
+  cueBallFail: 0
+  endGame: 0
+  nameWin: 
   AppState: 0
   ActorNumbersInRoom: 
 --- !u!4 &1771913136
@@ -6093,7 +6230,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -6570,7 +6706,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -6628,7 +6763,7 @@ GameObject:
   - 65: {fileID: 2041433326}
   m_Layer: 0
   m_Name: rail03
-  m_TagString: Untagged
+  m_TagString: Rail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6849,7 +6984,6 @@ MonoBehaviour:
   isStatic: 0
   isFinished: 0
   isAddedToArray: 0
-  cueBallFail: 0
   firstPosition: {x: 0, y: 0, z: 0}
   MinAcceptableVelocity: .100000001
   MinAcceptableEulerangle: .100000001
@@ -6864,7 +6998,7 @@ GameObject:
   - 114: {fileID: 2115944713}
   - 114: {fileID: 2115944712}
   m_Layer: 0
-  m_Name: CircleBarPrefab
+  m_Name: CircleBar1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6903,11 +7037,11 @@ MonoBehaviour:
   labelOutlineColor: {r: 0, g: 0, b: 0, a: 1}
   effectSmoothChange: 1
   effectSmoothChangeSpeed: .5
-  storedScreenWidth: 283
-  storedScreenHeight: 452
-  screenPosition: {x: 10, y: 240}
+  storedScreenWidth: 282
+  storedScreenHeight: 451
+  screenPosition: {x: 20, y: 530}
   screenPositionNormalized: 0
-  size: {x: 30, y: 30}
+  size: {x: 50, y: 50}
   sizeNormalized: 0
   screenPositionCalculateSize: 0
   textureBackground: {fileID: 0}
@@ -7013,7 +7147,7 @@ GameObject:
   - 65: {fileID: 2120393073}
   m_Layer: 0
   m_Name: rail04
-  m_TagString: Untagged
+  m_TagString: Rail
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -32,6 +32,7 @@ public class CueTarget : MonoBehaviour {
 			Vector3 fromBallTargetToCamera = Camera.main.transform.position - staffDirection.ballTarget.transform.position;
 			Vector3 staffDirectionVector = fromBallTargetToCamera * (0.14f / fromBallTargetToCamera.y);
 			ballDirection.SetActive(true);
+			ballReplection.SetActive(true);
 			Vector3 newPosition = new Vector3 (staffDirection.ballTarget.transform.position.x + staffDirectionVector.x,
 			                                   ballDirection.transform.position.y,
 			                                   staffDirection.ballTarget.transform.position.z + staffDirectionVector.z);
@@ -44,6 +45,7 @@ public class CueTarget : MonoBehaviour {
 		else
 		{
 			ballDirection.SetActive(false);
+			ballReplection.SetActive(false);
 		}
 	}
 
@@ -51,7 +53,7 @@ public class CueTarget : MonoBehaviour {
 	{
 		ballReplection.transform.position = transform.position;
 
-		float angle = FindAngle (directionVector, -transform.right, Vector3.up);
+		float angle =  FindAngle(directionVector, -transform.right, Vector3.up);
 		if (angle > 0)
 		{
 			ballReplection.transform.eulerAngles = new Vector3 (ballDirection.transform.eulerAngles.x,
@@ -80,7 +82,7 @@ public class CueTarget : MonoBehaviour {
 		                                                  ballDirection.transform.localScale.z);
 	}
 
-	float FindAngle(Vector3 fromVector, Vector3 toVector, Vector3 upVector)
+	public float FindAngle(Vector3 fromVector, Vector3 toVector, Vector3 upVector)
 	{
 		if (toVector == Vector3.zero)
 		{
